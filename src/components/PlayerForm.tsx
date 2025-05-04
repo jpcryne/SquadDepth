@@ -10,6 +10,20 @@ interface PlayerFormProps {
 const PlayerForm: React.FC<PlayerFormProps> = ({ player, onSubmit, onCancel }) => {
   const [name, setName] = useState(player?.name || '');
   const [wage, setWage] = useState(player?.wage || 0);
+  const [wageInput, setWageInput] = useState(player?.wage?.toString() || '');
+  
+  // Handle wage input changes
+  const handleWageChange = (value: string) => {
+    setWageInput(value);
+    
+    // Update actual wage value (as number) only if input is valid
+    const numValue = Number(value);
+    if (!isNaN(numValue)) {
+      // Round to nearest 100 when input changes
+      const roundedValue = Math.round(numValue / 100) * 100;
+      setWage(roundedValue);
+    }
+  };
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +41,7 @@ const PlayerForm: React.FC<PlayerFormProps> = ({ player, onSubmit, onCancel }) =
     // Reset form
     setName('');
     setWage(0);
+    setWageInput('');
   };
   
   return (
@@ -77,10 +92,10 @@ const PlayerForm: React.FC<PlayerFormProps> = ({ player, onSubmit, onCancel }) =
         <input
           id="wage"
           type="number"
-          value={wage}
-          onChange={(e) => setWage(Number(e.target.value))}
+          value={wageInput}
+          onChange={(e) => handleWageChange(e.target.value)}
           min="0"
-          step="1000"
+          step="100"
           required
           style={{
             width: '100%',
