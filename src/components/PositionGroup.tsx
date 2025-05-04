@@ -1,35 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Position, Player } from '../types';
 import PlayerCard from './PlayerCard';
-import PlayerForm from './PlayerForm';
 
 interface PositionGroupProps {
   position: Position;
-  updatePlayer: (positionId: string, player: Player) => void;
-  removePlayer: (positionId: string, playerId: string) => void;
+  onAddPlayer: () => void;
+  onEditPlayer: (player: Player) => void;
+  onRemovePlayer: (playerId: string) => void;
 }
 
 const PositionGroup: React.FC<PositionGroupProps> = ({ 
-  position, 
-  updatePlayer, 
-  removePlayer 
+  position,
+  onAddPlayer,
+  onEditPlayer,
+  onRemovePlayer
 }) => {
-  const [isAddingPlayer, setIsAddingPlayer] = useState(false);
-  const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
-  
-  const handleAddPlayer = (player: Player) => {
-    updatePlayer(position.id, {
-      ...player,
-      position: position.name,
-      positionIndex: position.players.length
-    });
-    setIsAddingPlayer(false);
-  };
-  
-  const handleEditPlayer = (player: Player) => {
-    updatePlayer(position.id, player);
-    setEditingPlayer(null);
-  };
   
   const availableSlots = 3 - position.players.length;
   
@@ -75,14 +60,14 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
           <PlayerCard 
             key={player.id}
             player={player}
-            onRemove={(id) => removePlayer(position.id, id)}
-            onEdit={(player) => setEditingPlayer(player)}
+            onRemove={() => onRemovePlayer(player.id)}
+            onEdit={() => onEditPlayer(player)}
           />
         ))}
         
-        {availableSlots > 0 && !isAddingPlayer && !editingPlayer && (
+        {availableSlots > 0 && (
           <button 
-            onClick={() => setIsAddingPlayer(true)}
+            onClick={onAddPlayer}
             style={{
               width: '100%',
               padding: '8px',
@@ -96,25 +81,6 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
           >
             + Add Player
           </button>
-        )}
-        
-        {isAddingPlayer && (
-          <div style={{ position: 'relative', zIndex: 100 }}>
-            <PlayerForm 
-              onSubmit={handleAddPlayer}
-              onCancel={() => setIsAddingPlayer(false)}
-            />
-          </div>
-        )}
-        
-        {editingPlayer && (
-          <div style={{ position: 'relative', zIndex: 100 }}>
-            <PlayerForm 
-              player={editingPlayer}
-              onSubmit={handleEditPlayer}
-              onCancel={() => setEditingPlayer(null)}
-            />
-          </div>
         )}
       </div>
     </div>

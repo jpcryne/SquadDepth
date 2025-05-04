@@ -3,6 +3,7 @@ import { defaultFormation } from './data/formations';
 import { Formation, Player } from './types';
 import FootballPitch from './components/FootballPitch';
 import BudgetPanel from './components/BudgetPanel';
+import FormModal from './components/FormModal';
 
 const App: React.FC = () => {
   // State for the formation
@@ -13,6 +14,17 @@ const App: React.FC = () => {
   
   // State for the budget
   const [budget, setBudget] = useState<number>(4000000); // Default budget of £4M
+  
+  // State for modal form
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    player?: Player;
+    positionId?: string;
+    isEditing: boolean;
+  }>({
+    isOpen: false,
+    isEditing: false
+  });
   
   // Update player in a position
   const updatePlayerInPosition = (positionId: string, player: Player) => {
@@ -52,6 +64,41 @@ const App: React.FC = () => {
     });
   };
   
+  // Open form for adding a player
+  const openAddPlayerForm = (positionId: string) => {
+    setModalState({
+      isOpen: true,
+      positionId,
+      isEditing: false
+    });
+  };
+  
+  // Open form for editing a player
+  const openEditPlayerForm = (positionId: string, player: Player) => {
+    setModalState({
+      isOpen: true,
+      positionId,
+      player,
+      isEditing: true
+    });
+  };
+  
+  // Close the modal
+  const closeModal = () => {
+    setModalState({
+      isOpen: false,
+      isEditing: false
+    });
+  };
+  
+  // Handle form submission
+  const handleFormSubmit = (player: Player) => {
+    if (modalState.positionId) {
+      updatePlayerInPosition(modalState.positionId, player);
+      closeModal();
+    }
+  };
+  
   return (
     <div className="app" style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <header style={{ textAlign: 'center', marginBottom: '24px' }}>
@@ -67,9 +114,18 @@ const App: React.FC = () => {
       
       <FootballPitch
         formation={formation}
-        updatePlayerInPosition={updatePlayerInPosition}
+        openAddPlayerForm={openAddPlayerForm}
+        openEditPlayerForm={openEditPlayerForm}
         removePlayerFromPosition={removePlayerFromPosition}
       />
+      
+      {modalState.isOpen && (
+        <FormModal
+          player={modalState.player}
+          onSubmit={handleFormSubmit}
+          onCancel={closeModal}
+        />
+      )}
     </div>
   );
 };

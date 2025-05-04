@@ -1,16 +1,18 @@
 import React from 'react';
-import { Formation } from '../types';
+import { Formation, Player } from '../types';
 import PositionGroup from './PositionGroup';
 
 interface FootballPitchProps {
   formation: Formation;
-  updatePlayerInPosition: (positionId: string, player: any) => void;
+  openAddPlayerForm: (positionId: string) => void;
+  openEditPlayerForm: (positionId: string, player: Player) => void;
   removePlayerFromPosition: (positionId: string, playerId: string) => void;
 }
 
 const FootballPitch: React.FC<FootballPitchProps> = ({ 
   formation, 
-  updatePlayerInPosition, 
+  openAddPlayerForm,
+  openEditPlayerForm,
   removePlayerFromPosition 
 }) => {
   return (
@@ -33,8 +35,9 @@ const FootballPitch: React.FC<FootballPitchProps> = ({
         <PositionGroup
           key={position.id}
           position={position}
-          updatePlayer={updatePlayerInPosition}
-          removePlayer={removePlayerFromPosition}
+          onAddPlayer={() => openAddPlayerForm(position.id)}
+          onEditPlayer={(player) => openEditPlayerForm(position.id, player)}
+          onRemovePlayer={(playerId) => removePlayerFromPosition(position.id, playerId)}
         />
       ))}
     </div>
