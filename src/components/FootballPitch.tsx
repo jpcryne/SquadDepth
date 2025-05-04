@@ -26,7 +26,7 @@ const FootballPitch: React.FC<FootballPitchProps> = ({
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         borderRadius: '8px',
-        overflow: 'hidden',
+        overflow: 'visible', // Changed from hidden to visible
       }}
     >
       {formation.positions.map((position) => (

@@ -44,7 +44,8 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        width: '100px',
+        width: '120px',
+        zIndex: 1, // Base z-index for position groups
       }}
     >
       <div 
@@ -61,6 +62,9 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
           marginBottom: '8px',
           fontSize: '12px',
           fontWeight: 'bold',
+          position: 'relative',
+          zIndex: 2, // Higher than the base position group but lower than forms
+          pointerEvents: 'none' // Makes the label transparent to mouse clicks
         }}
       >
         {position.name}
@@ -95,18 +99,22 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
         )}
         
         {isAddingPlayer && (
-          <PlayerForm 
-            onSubmit={handleAddPlayer}
-            onCancel={() => setIsAddingPlayer(false)}
-          />
+          <div style={{ position: 'relative', zIndex: 100 }}>
+            <PlayerForm 
+              onSubmit={handleAddPlayer}
+              onCancel={() => setIsAddingPlayer(false)}
+            />
+          </div>
         )}
         
         {editingPlayer && (
-          <PlayerForm 
-            player={editingPlayer}
-            onSubmit={handleEditPlayer}
-            onCancel={() => setEditingPlayer(null)}
-          />
+          <div style={{ position: 'relative', zIndex: 100 }}>
+            <PlayerForm 
+              player={editingPlayer}
+              onSubmit={handleEditPlayer}
+              onCancel={() => setEditingPlayer(null)}
+            />
+          </div>
         )}
       </div>
     </div>

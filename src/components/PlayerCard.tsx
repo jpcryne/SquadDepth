@@ -13,7 +13,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onRemove, onEdit }) => 
       className="player-card"
       style={{
         background: 'white',
-        padding: '8px',
+        padding: '6px 8px',
         borderRadius: '4px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
         margin: '4px 0',
@@ -22,18 +22,20 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onRemove, onEdit }) => 
         alignItems: 'center',
         fontSize: '12px',
         width: '100%',
+        minWidth: '100px',
+        flexWrap: 'wrap',
+        position: 'relative',
+        zIndex: 3, // Higher than position labels but lower than forms
       }}
     >
       <div style={{ 
         display: 'flex', 
         alignItems: 'center',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        flexGrow: 1,
-        marginRight: '4px'
+        marginRight: '4px',
+        minWidth: '40px',
+        maxWidth: '100%'
       }}>
-        <strong style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{player.name}</strong>
+        <strong>{player.name}</strong>
       </div>
       
       <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>

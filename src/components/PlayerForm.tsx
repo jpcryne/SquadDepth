@@ -30,16 +30,26 @@ const PlayerForm: React.FC<PlayerFormProps> = ({ player, onSubmit, onCancel }) =
   };
   
   return (
-    <form 
-      onSubmit={handleSubmit}
+    <div
       style={{
-        background: 'white',
-        padding: '10px',
-        borderRadius: '4px',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-        width: '100%',
-        marginTop: '8px',
+        position: 'fixed', // Changed from absolute to fixed
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '300px', // Fixed width
+        zIndex: 1000, // Even higher z-index
+        boxShadow: '0 0 0 9999px rgba(0, 0, 0, 0.5)' // Add overlay
       }}
+    >
+      <form 
+        onSubmit={handleSubmit}
+        style={{
+          background: 'white',
+          padding: '16px',
+          borderRadius: '8px',
+          width: '100%',
+          border: '3px solid #4CAF50',
+        }}
     >
       <div style={{ marginBottom: '8px' }}>
         <label 
@@ -128,6 +138,7 @@ const PlayerForm: React.FC<PlayerFormProps> = ({ player, onSubmit, onCancel }) =
         </button>
       </div>
     </form>
+    </div>
   );
 };
 
