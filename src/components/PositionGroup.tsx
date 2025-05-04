@@ -31,31 +31,16 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
         alignItems: 'center',
         width: '120px',
         zIndex: 1, // Base z-index for position groups
+        pointerEvents: position.players.length >= 3 ? 'none' : 'auto' // Disable clicks only when full
       }}
     >
-      <div 
-        className="position-label"
-        style={{
-          background: '#333',
-          color: 'white',
-          borderRadius: '50%',
-          width: '30px',
-          height: '30px',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: '8px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          position: 'relative',
-          zIndex: 2, // Higher than the base position group but lower than forms
-          pointerEvents: 'none' // Makes the label transparent to mouse clicks
-        }}
-      >
-        {position.name}
-      </div>
+      {/* Position label moved to the FootballPitch component */}
       
-      <div className="player-stack" style={{ width: '100%' }}>
+      <div className="player-stack" style={{ 
+        width: '100%',
+        position: 'relative',
+        zIndex: 5 // Higher than position labels
+      }}>
         {position.players.map((player) => (
           <PlayerCard 
             key={player.id}
@@ -77,6 +62,9 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
               cursor: 'pointer',
               marginTop: '4px',
               fontSize: '12px',
+              position: 'relative',
+              zIndex: 10, // Higher than position labels
+              pointerEvents: 'auto' // Ensure this button is always clickable
             }}
           >
             + Add Player
