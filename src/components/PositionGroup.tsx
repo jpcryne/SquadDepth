@@ -27,19 +27,36 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
         top: `${position.y}%`,
         transform: 'translate(-50%, -50%)',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
-        width: '120px',
-        zIndex: 1, // Base z-index for position groups
-        pointerEvents: position.players.length >= 3 ? 'none' : 'auto' // Disable clicks only when full
+        width: '180px',
+        zIndex: 1
       }}
     >
-      {/* Position label moved to the FootballPitch component */}
+      {/* Position label on the left */}
+      <div 
+        className="position-label"
+        style={{
+          background: '#333',
+          color: 'white',
+          borderRadius: '50%',
+          width: '30px',
+          height: '30px',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginRight: '12px',
+          fontSize: '12px',
+          fontWeight: 'bold',
+          flexShrink: 0
+        }}
+      >
+        {position.name}
+      </div>
       
+      {/* Player stack on the right */}
       <div className="player-stack" style={{ 
-        width: '100%',
-        position: 'relative',
-        zIndex: 5 // Higher than position labels
+        width: '120px',
+        position: 'relative'
       }}>
         {position.players.map((player) => (
           <PlayerCard 

@@ -32,38 +32,7 @@ const FootballPitch: React.FC<FootballPitchProps> = ({
         isolation: 'isolate', // Creates a new stacking context for better z-index handling
       }}
     >
-      {/* Render position labels in a separate layer below everything */}
-      {formation.positions.map((position) => (
-        <div
-          key={`label-${position.id}`}
-          style={{
-            position: 'absolute',
-            left: `${position.x}%`,
-            top: `${position.y}%`,
-            transform: 'translate(-50%, -80%)', // Move label up
-            zIndex: 1,
-            pointerEvents: 'none' // Make completely transparent to clicks
-          }}
-        >
-          <div 
-            style={{
-              background: '#333',
-              color: 'white',
-              borderRadius: '50%',
-              width: '30px',
-              height: '30px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              fontSize: '12px',
-              fontWeight: 'bold',
-              pointerEvents: 'none'
-            }}
-          >
-            {position.name}
-          </div>
-        </div>
-      ))}
+      {/* Position labels are now handled in the PositionGroup component */}
       
       {/* Render position groups with players separately */}
       {formation.positions.map((position) => (
