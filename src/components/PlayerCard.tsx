@@ -22,7 +22,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onRemove, onEdit }) => 
         alignItems: 'center',
         fontSize: '12px',
         width: '100%',
-        minWidth: '100px',
+        minWidth: '130px',
         flexWrap: 'wrap',
         position: 'relative',
         zIndex: 3, // Higher than position labels but lower than forms
@@ -44,7 +44,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onRemove, onEdit }) => 
           padding: '2px 6px', 
           borderRadius: '10px',
           fontSize: '10px',
-          marginRight: '8px',
+          marginRight: '6px',
           whiteSpace: 'nowrap'
         }}>
           £{player.wage.toLocaleString()}/wk
@@ -55,7 +55,7 @@ const PlayerCard: React.FC<PlayerCardProps> = ({ player, onRemove, onEdit }) => 
           onClick={() => onEdit(player)}
           style={{
             cursor: 'pointer',
-            marginRight: '8px',
+            marginRight: '6px',
             width: '16px',
             height: '16px',
             display: 'flex',

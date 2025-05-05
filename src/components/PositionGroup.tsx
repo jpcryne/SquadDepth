@@ -28,7 +28,7 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
         transform: 'translate(-50%, -50%)',
         display: 'flex',
         alignItems: 'center',
-        width: '180px',
+        width: '200px',
         zIndex: 1
       }}
     >
@@ -55,7 +55,7 @@ const PositionGroup: React.FC<PositionGroupProps> = ({
       
       {/* Player stack on the right */}
       <div className="player-stack" style={{ 
-        width: '120px',
+        width: '140px',
         position: 'relative'
       }}>
         {position.players.map((player) => (
