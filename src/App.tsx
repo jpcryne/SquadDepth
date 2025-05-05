@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { defaultFormation } from './data/formations';
+import { defaultFormation, formations } from './data/formations';
 import { Formation, Player } from './types';
 import FootballPitch from './components/FootballPitch';
 import BudgetPanel from './components/BudgetPanel';
 import FormModal from './components/FormModal';
+import FormationSelector from './components/FormationSelector';
 
 const App: React.FC = () => {
   // State for the formation
@@ -11,6 +12,31 @@ const App: React.FC = () => {
     ...defaultFormation,
     positions: defaultFormation.positions.map(pos => ({ ...pos, players: [...pos.players] }))
   });
+  
+  // Function to change formation
+  const handleFormationChange = (newFormation: Formation) => {
+    // Create a mapping of position IDs to players from the current formation
+    const playerMap: Record<string, Player[]> = {};
+    formation.positions.forEach(position => {
+      playerMap[position.id] = [...position.players];
+    });
+    
+    // Apply players from the old formation to the new formation where possible
+    const newPositions = newFormation.positions.map(position => {
+      // If position exists in old formation, keep the players
+      const existingPlayers = playerMap[position.id] || [];
+      return {
+        ...position,
+        players: [...existingPlayers]
+      };
+    });
+    
+    // Set the new formation with the preserved players
+    setFormation({
+      ...newFormation,
+      positions: newPositions
+    });
+  };
   
   // State for the budget
   const [budget, setBudget] = useState<number>(4000000); // Default budget of £4M
@@ -110,6 +136,12 @@ const App: React.FC = () => {
         formation={formation}
         budget={budget}
         setBudget={setBudget}
+      />
+      
+      <FormationSelector
+        formations={formations}
+        currentFormation={formation}
+        onFormationChange={handleFormationChange}
       />
       
       <FootballPitch
