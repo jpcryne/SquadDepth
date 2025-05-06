@@ -61,17 +61,46 @@ export const getInitialPlayers = (): Record<string, Player[]> => {
         if (positionId) {
           // Handle special cases: CB and CM need to be distributed
           if (position === 'CB') {
-            // First CB goes to lcb, second to rcb
-            const lcbPlayers = players.slice(0, 1).map((p, i) => ({ ...p, positionIndex: i }));
-            const rcbPlayers = players.slice(1, 2).map((p, i) => ({ ...p, positionIndex: i }));
+            // Distribute CBs evenly between lcb and rcb
+            // Create copies of all CB players
+            const allCBs = [...players];
+            
+            // Initialize arrays for both CB positions
+            const lcbPlayers: Player[] = [];
+            const rcbPlayers: Player[] = [];
+            
+            // Distribute CBs evenly between lcb and rcb
+            while (allCBs.length > 0) {
+              // Add to position with fewer players
+              if (lcbPlayers.length <= rcbPlayers.length) {
+                lcbPlayers.push({ ...allCBs.shift()!, positionIndex: lcbPlayers.length });
+              } else {
+                rcbPlayers.push({ ...allCBs.shift()!, positionIndex: rcbPlayers.length });
+              }
+            }
             
             result['lcb'] = lcbPlayers;
             result['rcb'] = rcbPlayers;
           } 
           else if (position === 'CM') {
-            // First CM goes to lcm, second to rcm
-            const lcmPlayers = players.slice(0, 1).map((p, i) => ({ ...p, positionIndex: i }));
-            const rcmPlayers = players.slice(1, 2).map((p, i) => ({ ...p, positionIndex: i }));
+            // First CM goes to lcm, second to rcm, the rest are distributed evenly
+            // Create copies of all CM players
+            const allCMs = [...players];
+            
+            // Take first for lcm
+            const lcmPlayers = allCMs.splice(0, 1).map((p, i) => ({ ...p, positionIndex: i }));
+            // Take next for rcm
+            const rcmPlayers = allCMs.splice(0, 1).map((p, i) => ({ ...p, positionIndex: i }));
+            
+            // Add remaining CMs to both positions evenly
+            while (allCMs.length > 0) {
+              // Add to position with fewer players
+              if (lcmPlayers.length <= rcmPlayers.length) {
+                lcmPlayers.push({ ...allCMs.shift()!, positionIndex: lcmPlayers.length });
+              } else {
+                rcmPlayers.push({ ...allCMs.shift()!, positionIndex: rcmPlayers.length });
+              }
+            }
             
             result['lcm'] = lcmPlayers;
             result['rcm'] = rcmPlayers;
